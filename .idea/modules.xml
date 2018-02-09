@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/GrrClientAndroidDemo.iml" filepath="$PROJECT_DIR$/GrrClientAndroidDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Grr_client_android/Grr_client_android.iml" filepath="$PROJECT_DIR$/Grr_client_android/Grr_client_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Grr_client_android/app.iml" filepath="$PROJECT_DIR$/Grr_client_android/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grr_nanny_android/grr_nanny_android.iml" filepath="$PROJECT_DIR$/grr_nanny_android/grr_nanny_android.iml" />
+    </modules>
+  </component>
+</project>
