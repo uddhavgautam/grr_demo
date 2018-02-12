@@ -1,4 +1,4 @@
-package com.example.gaute.grrclientandroiddemo;
+package com.example.gaute.grrclientandroiddemo.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ServiceGrrClientAndroid extends Service {
+public class ServiceBackgroundGrrClientAndroid extends Service {
     private String TAG = this.getClass().getSimpleName();
 
     private Runnable runnable1;
@@ -27,10 +27,6 @@ public class ServiceGrrClientAndroid extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "Uddhav "+Thread.currentThread().getStackTrace()[2].getMethodName());
-
-
-
     }
 
     @Override
@@ -39,11 +35,12 @@ public class ServiceGrrClientAndroid extends Service {
 
         //forcefully restart this service again. System starts apk by reading AndroidManifest.xml file always
         //If the starter process of apk is already destroyed, then the below two lines of code doesn't work at all
+        //Because MainActivity.class can be already destoryed, and @Nonnull check of Intent runs on the runtime
 //        Intent intentMainActivity = new Intent(this, MainActivity.class);
 //        startActivity(intentMainActivity);
 
         //If the starter process of this service is already destroyed in Android System memory, then the below two lines of code doesn't work at all
-//        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceGrrClientAndroid.class);
+//        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
 //        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
 
     }
@@ -77,6 +74,7 @@ public class ServiceGrrClientAndroid extends Service {
 
         sendBroadcast(new Intent("destroy_activity"));
 
+        //the backuped service after destroy doesn't run. Now it is subject to GC
         return START_NOT_STICKY;
     }
 

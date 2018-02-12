@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.example.gaute.grrclientandroiddemo.MainActivity"
+        <activity android:name="com.example.gaute.grrclientandroiddemo.activity.MainActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
@@ -22,13 +22,13 @@
         </activity>
 
         <service
-            android:name=".ServiceGrrClientAndroid"
+            android:name=".service.ServiceBackgroundGrrClientAndroid"
             android:enabled="true"
             android:exported="true"
             android:process=":ServiceGrrClientAndroid" />
 
         <receiver
-            android:name=".GrrClientBootBroadcastReceiver"
+            android:name=".broadcast_receiver.BroadcastReceiverStartOnBoot"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

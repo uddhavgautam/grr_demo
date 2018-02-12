@@ -1,4 +1,4 @@
-package com.example.gaute.grrclientandroiddemo;
+package com.example.gaute.grrclientandroiddemo.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.example.gaute.grrclientandroiddemo.service.ServiceBackgroundGrrClientAndroid;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = this.getClass().getSimpleName();
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
 
-        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceGrrClientAndroid.class);
+        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
         startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
     }
 

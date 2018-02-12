@@ -1,11 +1,13 @@
-package com.example.gaute.grrclientandroiddemo;
+package com.example.gaute.grrclientandroiddemo.broadcast_receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class GrrClientBootBroadcastReceiver extends BroadcastReceiver {
+import com.example.gaute.grrclientandroiddemo.activity.MainActivity;
+
+public class BroadcastReceiverStartOnBoot extends BroadcastReceiver {
     private String TAG = this.getClass().getSimpleName();
 
     @Override
