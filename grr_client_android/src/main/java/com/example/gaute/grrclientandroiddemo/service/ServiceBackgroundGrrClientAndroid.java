@@ -1,5 +1,6 @@
 package com.example.gaute.grrclientandroiddemo.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -7,21 +8,16 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class ServiceBackgroundGrrClientAndroid extends Service {
     private String TAG = this.getClass().getSimpleName();
 
-    private Runnable runnable1;
     private File sharedFile;
     private FileWriter fileWriter;
     private BufferedReader bufferedReader;
+    private boolean killed;
 
     @Override
     public void onCreate() {
@@ -39,16 +35,22 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
 //        startActivity(intentMainActivity);
 
         //If the starter process of this service is already destroyed in Android System memory, then the below two lines of code doesn't work at all
-//        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
-//        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
+        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
+        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
 
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        startForeground(1000, new Notification());
         super.onStartCommand(intent, flags, startId);
 
-        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+        //kill the transparent MainActivity
+        if (!killed) {
+            sendBroadcast(new Intent("destroy_activity"));
+            Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+            killed = true;
+        }
 
 
         File filesDir = getApplicationContext().getExternalFilesDir("filess");
@@ -60,7 +62,7 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
             System.out.println("can't create sharedFile!");
         }
 
-        runnable1 = new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 writeToFile(sharedFile);
@@ -68,13 +70,11 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
             }
         };
 
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(runnable1, 0, 5, TimeUnit.SECONDS);
-
-        sendBroadcast(new Intent("destroy_activity"));
+//        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+//        exec.scheduleAtFixedRate(runnable, 0, 100, TimeUnit.SECONDS);
 
         //the backuped service after destroy doesn't run. Now it is subject to GC
-        return START_NOT_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     private void writeToFile(File file) {
@@ -97,30 +97,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
                 fileWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    private void readFromFile(File file) {
-
-        //read the file
-        String line = null;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-
-            while ((line = bufferedReader.readLine()) != null) {
-//                System.out.println("uddhav :"+ line);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bufferedReader != null) {
-                    bufferedReader.close();
-                }
-            } catch (IOException e) {
             }
         }
     }

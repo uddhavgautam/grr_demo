@@ -40,7 +40,7 @@ public class Util {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void scheduleJob(Context context) {
 
-        ComponentName serviceComponent = new ComponentName(context, ServiceForFileObserving.class);
+        ComponentName serviceComponent = new ComponentName(context, JobServiceHeartBeatChecker.class);
         JobInfo jobInfo;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             jobInfo = new JobInfo.Builder(JOB_ID, serviceComponent)
@@ -49,6 +49,7 @@ public class Util {
                     .setOverrideDeadline(1000)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .build();
+
         } else {
             jobInfo = new JobInfo.Builder(JOB_ID, serviceComponent)
                     .setPeriodic(Interval)
@@ -57,14 +58,12 @@ public class Util {
         }
 
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        if(jobScheduler != null) {
+        if (jobScheduler != null && jobInfo != null) {
             Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
             Log.i("Interval ", String.valueOf(jobInfo.getFlexMillis()));
             Log.i("Flex ", String.valueOf(jobInfo.getIntervalMillis()));
             Log.i(TAG, jobScheduler.getAllPendingJobs().toString());
             jobScheduler.schedule(jobInfo);
         }
-
     }
-
 }
