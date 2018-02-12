@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.grr_nanny_android">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
+
+        <activity android:name="com.example.grr_nanny_android.MainActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +22,7 @@
         </activity>
 
         <receiver
-            android:name=".GrrNannyBroadcastReceiver"
+            android:name=".GrrNannyBootBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -32,9 +35,17 @@
             android:name=".HeartBeatCheckerJIS"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" >
-
+            android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
+
+        <service
+            android:name=".ServiceForFileObserving"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":ServiceForFileObserving">
+        </service>
+
     </application>
 
 </manifest>

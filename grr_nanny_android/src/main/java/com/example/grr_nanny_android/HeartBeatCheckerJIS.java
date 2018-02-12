@@ -1,11 +1,8 @@
 package com.example.grr_nanny_android;
 
-import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.JobIntentService;
 
 import java.io.BufferedReader;
@@ -15,6 +12,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class HeartBeatCheckerJIS extends JobIntentService {
+    private String TAG = this.getClass().getSimpleName();
+
+
     private File sharedFile;
     private BufferedReader bufferedReader;
 
@@ -29,7 +29,6 @@ public class HeartBeatCheckerJIS extends JobIntentService {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         //intent is ACTION_BOOT_COMPLETED
@@ -50,8 +49,8 @@ public class HeartBeatCheckerJIS extends JobIntentService {
 
         readFromFile(sharedFile);
 
-        Util.scheduleJob(getApplicationContext()); // reschedule the job
-
+        Util util = new Util();
+        util.scheduleJob(this);
 
 
     }

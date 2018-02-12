@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Grr_client_android" />
+            <option value="$PROJECT_DIR$/grr_client_android" />
             <option value="$PROJECT_DIR$/grr_nanny_android" />
           </set>
         </option>

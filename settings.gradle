@@ -1,1 +1,1 @@
-include ':Grr_client_android', ':grr_nanny_android'
+include ':grr_client_android', ':grr_nanny_android'
