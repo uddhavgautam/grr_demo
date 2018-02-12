@@ -3,6 +3,7 @@ package com.example.gaute.grrclientandroiddemo;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,15 +11,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ServiceGrrClientAndroid extends Service {
-    private String TAG = "ServiceGrrClientAndroid";
+    private String TAG = this.getClass().getSimpleName();
 
     private Runnable runnable1;
     private File sharedFile;
@@ -29,16 +27,32 @@ public class ServiceGrrClientAndroid extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "Uddhav "+Thread.currentThread().getStackTrace()[2].getMethodName());
+
+
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        //forcefully restart this service again. System starts apk by reading AndroidManifest.xml file always
+        //If the starter process of apk is already destroyed, then the below two lines of code doesn't work at all
+//        Intent intentMainActivity = new Intent(this, MainActivity.class);
+//        startActivity(intentMainActivity);
+
+        //If the starter process of this service is already destroyed in Android System memory, then the below two lines of code doesn't work at all
+//        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceGrrClientAndroid.class);
+//        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
+        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
 
 
         File filesDir = getApplicationContext().getExternalFilesDir("filess");
@@ -60,6 +74,8 @@ public class ServiceGrrClientAndroid extends Service {
 
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(runnable1, 0, 5, TimeUnit.SECONDS);
+
+        sendBroadcast(new Intent("destroy_activity"));
 
         return START_NOT_STICKY;
     }
@@ -116,5 +132,7 @@ public class ServiceGrrClientAndroid extends Service {
     public IBinder onBind(Intent intent) {
         return null /* I don't need binder. This is general process */;
     }
+
+
 
 }
