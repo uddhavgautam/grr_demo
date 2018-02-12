@@ -23,7 +23,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
     private FileWriter fileWriter;
     private BufferedReader bufferedReader;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
