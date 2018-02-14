@@ -77,6 +77,7 @@ public class ServiceHeartBeatChecker extends Service {
         Thread thread = new Thread(runnable);
         thread.start();
 
+
         return START_REDELIVER_INTENT;
     }
 
