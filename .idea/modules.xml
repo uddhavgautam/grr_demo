@@ -3,10 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GrrClientAndroidDemo.iml" filepath="$PROJECT_DIR$/GrrClientAndroidDemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grr_client_android/Grr_client_android.iml" filepath="$PROJECT_DIR$/grr_client_android/Grr_client_android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Grr_client_android/app.iml" filepath="$PROJECT_DIR$/Grr_client_android/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grr_client_android/grr_client_android.iml" filepath="$PROJECT_DIR$/grr_client_android/grr_client_android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/grr_nanny_android/grr_nanny_android.iml" filepath="$PROJECT_DIR$/grr_nanny_android/grr_nanny_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grrclientandroid/grrclientandroid.iml" filepath="$PROJECT_DIR$/grrclientandroid/grrclientandroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grrnannyandroid/grrnannyandroid.iml" filepath="$PROJECT_DIR$/grrnannyandroid/grrnannyandroid.iml" />
     </modules>
   </component>
 </project>

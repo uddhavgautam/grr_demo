@@ -8,8 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/grr_client_android" />
-            <option value="$PROJECT_DIR$/grr_nanny_android" />
+            <option value="$PROJECT_DIR$/grrclientandroid" />
+            <option value="$PROJECT_DIR$/grrnannyandroid" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
