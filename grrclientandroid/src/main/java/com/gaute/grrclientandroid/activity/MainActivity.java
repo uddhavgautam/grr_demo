@@ -73,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
             if (Objects.equals(intent.getAction(), "destroy_activity_grr_client_android")) {
                 Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
                 MainActivity.this.finishAndRemoveTask(); /* Another hacked */
-                try {
-                    this.finalize();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
             }
         }
     }

@@ -1,8 +1,10 @@
 package com.gaute.grrclientandroid.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.File;
@@ -30,23 +32,24 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
 
         //forcefully restart this service again. System starts apk by reading AndroidManifest.xml file always
         //If the starter process of apk is already destroyed, then the below two lines of code doesn't work at all
-        //Because MainActivity.class can be already destoryed, and @Nonnull check of Intent runs on the runtime
+        //Because MainActivity.class can be already destroyed, and @Nonnull check of Intent runs on the runtime
 //        Intent intentMainActivity = new Intent(this, MainActivity.class);
 //        startActivity(intentMainActivity);
 
         //If the starter process of this service is already destroyed in Android System memory, then the below two lines of code doesn't work at all
-//        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
-//        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
+        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
+        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
 
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        startForeground(1000, new Notification());
+        super.onStartCommand(intent, flags, startId);
+
+        startForeground(1001, new Notification());
         /* holds wake lock for long time and battery drain
         notification comes there */
-        super.onStartCommand(intent, flags, startId);
 
         //kill the transparent MainActivity
         if (!killed) {
@@ -57,8 +60,12 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
 
 
         //shared file creation
-        File filesDir = getApplicationContext().getExternalFilesDir("filess");
+        File filesDir = getApplicationContext().getExternalFilesDir(".");
         //create a sharedFile
+
+        //each app is separate virtual machine, and it has different user id.
+        //Soln1: we need shared user for two apps
+
         sharedFile = new File(filesDir, "sharedFile.txt");
         try {
             sharedFile.createNewFile();
@@ -74,7 +81,7 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         };
 
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(runnable, 0, 100, TimeUnit.SECONDS);
+        exec.scheduleAtFixedRate(runnable, 1000, 5000, TimeUnit.SECONDS);
 
         return START_REDELIVER_INTENT;
     }
@@ -103,9 +110,10 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         }
     }
 
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null /* I don't need binder. This is general process */;
+        return null;
     }
 
 }
