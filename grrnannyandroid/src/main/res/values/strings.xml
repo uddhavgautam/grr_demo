@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Grr_nanny_android</string>
+    <string name="label_shared_user">shareduser</string>
 </resources>

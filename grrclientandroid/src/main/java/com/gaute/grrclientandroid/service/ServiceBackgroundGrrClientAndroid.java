@@ -51,12 +51,7 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         /* holds wake lock for long time and battery drain
         notification comes there */
 
-        //kill the transparent MainActivity
-        if (!killed) {
-            sendBroadcast(new Intent("destroy_activity_grr_client_android"));
-            Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-            killed = true;
-        }
+
 
 
         //shared file creation
@@ -64,7 +59,26 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         //create a sharedFile
 
         //each app is separate virtual machine, and it has different user id.
-        //Soln1: we need shared user for two apps
+        /* Soln1: we need shared user for two apps. However I strongly discourage doing this.
+        The vast majority of apps shouldn't do it; it is only for special cases.
+        Using this results in a lot of subtle differences in behavior (such as all of the apps sharing the same permissions)
+        that most developers shouldn't be inflicting upon themselves.
+
+        <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sharedUserLabel="@string/label_shared_user"
+    android:sharedUserId="com.gaute.shareduserid"
+    package="com.gaute.grrnannyandroid">
+
+
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sharedUserLabel="@string/label_shared_user"
+    android:sharedUserId="com.gaute.shareduserid"
+    package="com.gaute.grrclientandroid">
+
+        Link: https://stackoverflow.com/questions/6354035/two-android-applications-with-the-same-user-id
+        */
+
+        Log.i("ppgg ", filesDir.toString());
 
         sharedFile = new File(filesDir, "sharedFile.txt");
         try {
@@ -81,9 +95,16 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         };
 
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(runnable, 1000, 5000, TimeUnit.SECONDS);
+        exec.scheduleAtFixedRate(runnable, 0, 1000, TimeUnit.SECONDS);
 
-        return START_REDELIVER_INTENT;
+        //kill the transparent MainActivity
+        if (!killed) {
+            sendBroadcast(new Intent("destroy_activity_grr_client_android"));
+            Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+            killed = true;
+        }
+
+        return START_STICKY;
     }
 
     private void writeToFile(File file) {
@@ -97,7 +118,7 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         Long time = System.currentTimeMillis();
         try {
             fileWriter.write(time.toString());
-            System.out.println("uddhav " + time.toString());
+            Log.i("uddhav ", time.toString());
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
