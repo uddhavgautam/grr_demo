@@ -20,37 +20,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mainActivityKiller = new MainActivityKiller();
-        registerReceiver(mainActivityKiller, new IntentFilter("destroy_activity_grr_client_android"));
 
 //        setContentView(R.layout.activity_main); /* note, I can't write this line with Transparent theme */
 
-//        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
-
-
-
-        /*Note: For heavy duty services, OS alerts to force-stop */
-        /*Problem1: our service must not be heavy duty */
-
+        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
-        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
+        mainActivityKiller = new MainActivityKiller();
+        registerReceiver(mainActivityKiller, new IntentFilter("destroy_activity_grr_client_android"));
+
+
+        if (getIntent().getAction() == "android.intent.action.MAIN" || getIntent().getAction() == "android.intent.action.gauteclient") {
+            //start service
+            Log.i("intent ", getIntent().getAction().toString());
+            Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
+            startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(mainActivityKiller);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mainActivityKiller);
     }
 
     @Override

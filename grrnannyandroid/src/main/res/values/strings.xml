@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Grr_nanny_android</string>
     <string name="label_shared_user">shareduser</string>
+    <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://www.google.com\",\n  }\n}]</string>
 </resources>

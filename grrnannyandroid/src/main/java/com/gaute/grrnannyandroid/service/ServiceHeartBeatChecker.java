@@ -2,6 +2,7 @@ package com.gaute.grrnannyandroid.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 public class ServiceHeartBeatChecker extends Service {
     private String TAG = this.getClass().getSimpleName();
@@ -192,56 +194,25 @@ public class ServiceHeartBeatChecker extends Service {
                         e.printStackTrace();
                     }
 
-                    //link: https://stackoverflow.com/questions/6613889/how-to-start-an-android-application-from-the-command-line
-                    // "am startservice -n com.gaute.grrclientandroid/.service.ServiceBackgroundGrrClientAndroid" can't start Background service without UI component
-//                    String cmdline = "/system/bin/sh -c \"am start -n com.gaute.grrclientandroid/.activity.MainActivity\"";
-                    /*Process process = null; //returns another process
-                    try {
-                        process = Runtime.getRuntime().exec(cmdline); //bug here //Runtime.exec(String) is not executed in a shell
-                        //link: https://stackoverflow.com/questions/31776546/why-does-runtime-execstring-work-for-some-but-not-all-commands/31776547
+                    //problem1: can't use explicit intent to point MainActivity of Grr_client_android
+                    //problem2: Verify There is an App to Receive the Intent
+                    /* Caution: If you invoke an intent and there is no app available on the device that can handle the intent, your app will crash. */
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.gauteclient");
+                    PackageManager packageManager = getPackageManager();
+                    List activities = packageManager.queryIntentActivities(intent,
+                            PackageManager.MATCH_DEFAULT_ONLY);
+                    boolean isIntentSafe = activities.size() > 0;
 
-                   /* try {
-                        assert process != null;
-                        process.waitFor();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if (isIntentSafe) {
+                        getApplicationContext().startActivity(intent);
+                        Log.i("appavailable ", "yes");
+                    } else {
+                        Log.i("appavailable ", "no");
                     }
 
-                    int exitCode = process.exitValue();
-                    if(exitCode == 0) {
-                        // success
-                        }
-                    else { // failed
-                        Log.i("processf ", "failed!"); //bug here
-                        }*/
 
-                    //Conclusion: Runtime.exec() doesn't simply work. Use ProcessBuilder
-//                    Process process = new ProcessBuilder("am start -n com.gaute.grrclientandroid/.activity.MainActivity").start();
-//                    Log.i("success1", "happened!");
-//
-//                    int exitCode = 10;
-//                     try {
-//                        assert process != null;
-//                         Log.i("success1", "happened!");
-//                         exitCode = process.waitFor();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-////                    int exitCode = process.exitValue();
-//                    if(exitCode == 0) {
-//                        // success
-//                        Log.i("success ", "happened!");
-//                        }
-//                    else { // failed
-//                        Log.i("processf ", "failed!"); //bug here
-//                        }
-//
-//
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
