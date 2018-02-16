@@ -1,6 +1,5 @@
 package com.gaute.grrclientandroid.service;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -37,8 +36,8 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
 //        startActivity(intentMainActivity);
 
         //If the starter process of this service is already destroyed in Android System memory, then the below two lines of code doesn't work at all
-        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
-        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
+//        Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
+//        startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
     }
 
 
@@ -46,13 +45,13 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        startForeground(1001, new Notification());
-        /* holds wake lock for long time and battery drain
-        notification comes there */
+//        startForeground(1001, new Notification()); //not needed anymore, Grr_nanny_android restart this as necessary
+        /* holds wake lock for long time and battery usage notification comes there */
 
 
         //shared file creation
         File filesDir = getApplicationContext().getExternalFilesDir(".");
+        Log.i("external file ", filesDir.toString());
         //create a sharedFile
 
         //each app is separate virtual machine, and it has different user id.
@@ -99,7 +98,7 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
             killed = true;
         }
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     private void writeToFile(File file) {
@@ -113,7 +112,7 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         Long time = System.currentTimeMillis();
         try {
             fileWriter.write(time.toString());
-            Log.i("uddhav ", time.toString());
+            Log.i("filewrite ", time.toString());
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();

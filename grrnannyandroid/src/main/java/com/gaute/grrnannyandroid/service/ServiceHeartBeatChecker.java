@@ -1,13 +1,10 @@
 package com.gaute.grrnannyandroid.service;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import com.gaute.grrnannyandroid.Util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,8 +35,8 @@ public class ServiceHeartBeatChecker extends Service {
         super.onDestroy();
 
         //start AlarmManager
-        Util util = new Util();
-        util.schedulerWork(getApplicationContext());
+//        Util util = new Util();
+//        util.schedulerWork(getApplicationContext());
     }
 
     /* onStartCommand is called by AlarmManager in repeat mode */
@@ -47,7 +44,10 @@ public class ServiceHeartBeatChecker extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        startForeground(1000, new Notification());
+        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+
+
+//        startForeground(1000, new Notification()); // not needed anymore, AlarmManager repeats this service
         /* holds wake lock for long time and battery drain
         notification comes there */
 
@@ -58,7 +58,7 @@ public class ServiceHeartBeatChecker extends Service {
         }
 
         //shared file creation
-        File filesDir = getApplicationContext().getExternalFilesDir(".");
+//        File filesDir = getApplicationContext().getExternalFilesDir(".");
         //create a sharedFile
 
         //each app is separate virtual machine, and it has different user id.
@@ -82,8 +82,14 @@ public class ServiceHeartBeatChecker extends Service {
         Link: https://stackoverflow.com/questions/6354035/two-android-applications-with-the-same-user-id
         */
 
-        sharedFile = new File("/storage/emulated/0/Android/data/com.gaute.grrclientandroid/files/.", "sharedFile.txt");
+        sharedFile = new File("/storage/emulated/0/Android/data/com.gaute.grrclientandroid/files/sharedFile.txt");
+        try {
+            sharedFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        Log.i("checkfe ", sharedFile.exists() + ""); //bug here
         if (sharedFile.exists()) {
 //            try {
 //                sharedFile.createNewFile();
@@ -95,6 +101,7 @@ public class ServiceHeartBeatChecker extends Service {
                 public void run() {
                     if (needRestart(sharedFile)/* checks if GrrClientAndroid restart is needed based on shared file */) {
                         //restart Grr_client_android
+                        Log.i("restart ", "restarting!");
                         restartGrrClientAndroid();
                     }
                 }
@@ -105,6 +112,7 @@ public class ServiceHeartBeatChecker extends Service {
 
         } else {
             //no file
+            Log.i("no file", Thread.currentThread().getStackTrace()[2].getMethodName());
             restartGrrClientAndroid();
         }
 
@@ -113,6 +121,7 @@ public class ServiceHeartBeatChecker extends Service {
 
     private boolean needRestart(File file) {
 
+        Log.i("restart ", "needed");
         //read the file
         String line = null;
         try {
@@ -183,11 +192,57 @@ public class ServiceHeartBeatChecker extends Service {
                         e.printStackTrace();
                     }
 
+                    //link: https://stackoverflow.com/questions/6613889/how-to-start-an-android-application-from-the-command-line
                     // "am startservice -n com.gaute.grrclientandroid/.service.ServiceBackgroundGrrClientAndroid" can't start Background service without UI component
-                    String cmdline = "am start -n com.gaute.grrclientandroid/.activity.MainActivity";
-                    Runtime.getRuntime().exec(cmdline); //returns another process
+//                    String cmdline = "/system/bin/sh -c \"am start -n com.gaute.grrclientandroid/.activity.MainActivity\"";
+                    /*Process process = null; //returns another process
+                    try {
+                        process = Runtime.getRuntime().exec(cmdline); //bug here //Runtime.exec(String) is not executed in a shell
+                        //link: https://stackoverflow.com/questions/31776546/why-does-runtime-execstring-work-for-some-but-not-all-commands/31776547
 
-                } catch (IOException e) {
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+
+                   /* try {
+                        assert process != null;
+                        process.waitFor();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    int exitCode = process.exitValue();
+                    if(exitCode == 0) {
+                        // success
+                        }
+                    else { // failed
+                        Log.i("processf ", "failed!"); //bug here
+                        }*/
+
+                    //Conclusion: Runtime.exec() doesn't simply work. Use ProcessBuilder
+//                    Process process = new ProcessBuilder("am start -n com.gaute.grrclientandroid/.activity.MainActivity").start();
+//                    Log.i("success1", "happened!");
+//
+//                    int exitCode = 10;
+//                     try {
+//                        assert process != null;
+//                         Log.i("success1", "happened!");
+//                         exitCode = process.waitFor();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+////                    int exitCode = process.exitValue();
+//                    if(exitCode == 0) {
+//                        // success
+//                        Log.i("success ", "happened!");
+//                        }
+//                    else { // failed
+//                        Log.i("processf ", "failed!"); //bug here
+//                        }
+//
+//
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         mainActivityKiller = new MainActivityKiller();
         registerReceiver(mainActivityKiller, new IntentFilter("destroy_activity_grr_client_android"));
 
-
 //        setContentView(R.layout.activity_main); /* note, I can't write this line with Transparent theme */
 
 //        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());

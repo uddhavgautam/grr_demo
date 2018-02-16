@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!--<manifest xmlns:android="http://schemas.android.com/apk/res/android"--><!--package="com.gaute.grrclientandroid">-->
-
+<?xml version="1.0" encoding="utf-8"?><!-- <manifest xmlns:android="http://schemas.android.com/apk/res/android" --><!-- package="com.gaute.grrclientandroid"> -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gaute.grrclientandroid"
     android:sharedUserId="com.gaute.shareduserid"
     android:sharedUserLabel="@string/label_shared_user">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -14,32 +14,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="com.gaute.grrclientandroid.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-            android:name="com.gaute.grrclientandroid.service.ServiceBackgroundGrrClientAndroid"
+            android:name=".service.ServiceBackgroundGrrClientAndroid"
             android:enabled="true"
             android:exported="true"
-            android:process=":ServiceGrrClientAndroid"/>
+            android:process=":ServiceGrrClientAndroid" />
 
         <receiver
-            android:name="com.gaute.grrclientandroid.broadcastreceiver.BroadcastReceiverStartOnBoot"
+            android:name=".broadcastreceiver.BroadcastReceiverStartOnBoot"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

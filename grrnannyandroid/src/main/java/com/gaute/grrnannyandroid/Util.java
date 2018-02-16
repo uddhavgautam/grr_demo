@@ -14,7 +14,6 @@ import com.gaute.grrnannyandroid.service.ServiceHeartBeatChecker;
 public class Util {
     private String TAG = this.getClass().getSimpleName();
 
-    private int JOB_ID = 1000;
     private long Interval = 10000; // 10 seconds
 
     public Util() {
@@ -27,7 +26,7 @@ public class Util {
         PendingIntent pi = PendingIntent.getService(context, 0, intentServiceGrrClientAndroid, 0);
 
         assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC, 100, 10000, pi);
+        alarmManager.setRepeating(AlarmManager.RTC, 100, Interval, pi);
 
     }
 }

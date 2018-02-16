@@ -5,6 +5,8 @@
     android:sharedUserId="com.gaute.shareduserid"
     android:sharedUserLabel="@string/label_shared_user">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
