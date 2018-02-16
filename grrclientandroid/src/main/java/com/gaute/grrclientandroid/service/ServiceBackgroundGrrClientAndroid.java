@@ -39,7 +39,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         //If the starter process of this service is already destroyed in Android System memory, then the below two lines of code doesn't work at all
         Intent intentServiceGrrClientAndroid = new Intent(this, ServiceBackgroundGrrClientAndroid.class);
         startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
-
     }
 
 
@@ -50,8 +49,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         startForeground(1001, new Notification());
         /* holds wake lock for long time and battery drain
         notification comes there */
-
-
 
 
         //shared file creation
@@ -77,8 +74,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
 
         Link: https://stackoverflow.com/questions/6354035/two-android-applications-with-the-same-user-id
         */
-
-        Log.i("ppgg ", filesDir.toString());
 
         sharedFile = new File(filesDir, "sharedFile.txt");
         try {

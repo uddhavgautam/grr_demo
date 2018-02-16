@@ -123,6 +123,7 @@ public class ServiceHeartBeatChecker extends Service {
             Long longValueFromFile;
 
             if (line != null && line.length() > 0) {
+                Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
                 valueFromFile = line.split(" ")[0];
                 longValueFromFile = Long.valueOf(valueFromFile);
                 if (ourTime - longValueFromFile >= 20000 /* unresponsive time */) {
