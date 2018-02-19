@@ -14,19 +14,14 @@ import com.gaute.grrnannyandroid.service.ServiceHeartBeatChecker;
 public class Util {
     private String TAG = this.getClass().getSimpleName();
 
-    private long Interval = 10000; // 10 seconds
-
     public Util() {
     }
 
-    public void schedulerWork(Context context) {
+    public void scheduleWork(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intentServiceGrrClientAndroid = new Intent(context, ServiceHeartBeatChecker.class);
-
         PendingIntent pi = PendingIntent.getService(context, 0, intentServiceGrrClientAndroid, 0);
-
         assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC, 100, Interval, pi);
-
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), MyConstants.HEARTBEAT_CHECK_INTERVAL, pi);
     }
 }

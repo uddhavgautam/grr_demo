@@ -14,40 +14,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.Transparent">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <!--android.intent.category.LAUNCHER is valid only for Activity-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.gauteclient" />
-
+            <intent-filter>
+                <action android:name="android.intent.action.startMainActivityForGrrClient" />
                 <category android:name="android.intent.category.DEFAULT" />
-
             </intent-filter>
-
 
         </activity>
 
+        <!--services directly can't be started from intent-filter-->
+        <!--https://stackoverflow.com/questions/4467600/how-to-launch-a-android-service-when-the-app-launches-->
         <service
             android:name=".service.ServiceBackgroundGrrClientAndroid"
             android:enabled="true"
-            android:exported="true"
-            android:process=":ServiceGrrClientAndroid" />
+            android:process=":ServiceGrrClientAndroid"></service>
 
         <receiver
             android:name=".broadcastreceiver.BroadcastReceiverStartOnBoot"
-            android:enabled="true"
-            android:exported="true">
+            android:enabled="true">
+            <!--use of intent filter makes this receiver is already exported -->
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
