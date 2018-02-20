@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.gaute.grrnannyandroid.MyConstants;
+import com.gaute.grrnannyandroid.Constants;
 import com.gaute.grrnannyandroid.R;
 
 import java.io.BufferedReader;
@@ -93,7 +93,7 @@ public class ServiceHeartBeatChecker extends Service {
                 Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
                 valueFromFile = line.split(" ")[0];
                 timeFromFile = Long.valueOf(valueFromFile);
-                if (ourTime - timeFromFile >= MyConstants.GRR_CLIENT_UNRESPONSIVE_TIME) {
+                if (ourTime - timeFromFile >= Constants.GRR_CLIENT_UNRESPONSIVE_TIME) {
                      /* if unresponsive, restart Grr_client_android */
                     return true;
                 }
@@ -118,9 +118,8 @@ public class ServiceHeartBeatChecker extends Service {
 
     private void restartGrrClientAndroid() {
                 try {
-//                    Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
                     try {
-                        Thread.currentThread().sleep(MyConstants.RESURRECTION_PERIOD);
+                        Thread.currentThread().sleep(Constants.RESURRECTION_PERIOD);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

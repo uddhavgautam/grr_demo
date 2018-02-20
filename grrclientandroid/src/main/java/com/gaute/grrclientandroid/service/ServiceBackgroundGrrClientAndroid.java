@@ -28,11 +28,16 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
+//        Log.i(TAG, Thread.currentThread().getStackTrace()[2].getMethodName());
 
 //        startForeground(1001, new Notification()); //not needed anymore, Grr_nanny_android restart this as necessary
         /* holds wake lock for long time and battery usage notification comes there */
 
+        startFileWriter();
+        return START_NOT_STICKY;
+    }
+
+    private void startFileWriter() {
         //shared file creation
         File filesDir = getApplicationContext().getExternalFilesDir(".");
         File sharedFile = new File(filesDir, "sharedFile.txt");
@@ -44,8 +49,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
 
         //write to sharedFile.txt using separate worker thread
         writeToFile(sharedFile);
-
-        return START_NOT_STICKY;
     }
 
     private void writeToFile(File file) {
@@ -79,8 +82,6 @@ public class ServiceBackgroundGrrClientAndroid extends Service {
         Thread thread = new Thread(runnable);
         thread.start();
 
-        //stop now
-        stopSelf();
     }
 
     @Nullable

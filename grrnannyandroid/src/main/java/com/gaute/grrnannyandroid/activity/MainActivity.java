@@ -24,24 +24,4 @@ public class MainActivity extends AppCompatActivity {
         Util util = new Util();
         util.scheduleWork(getApplicationContext());
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

@@ -21,7 +21,7 @@ public class Util {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intentServiceGrrClientAndroid = new Intent(context, ServiceHeartBeatChecker.class);
         PendingIntent pi = PendingIntent.getService(context, 0, intentServiceGrrClientAndroid, 0);
-        assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), MyConstants.HEARTBEAT_CHECK_INTERVAL, pi);
+        assert alarmManager != null; //catch exception on the class that calls it
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), Constants.HEARTBEAT_CHECK_INTERVAL, pi);
     }
 }

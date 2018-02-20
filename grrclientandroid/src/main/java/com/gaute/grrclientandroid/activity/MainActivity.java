@@ -22,24 +22,4 @@ public class MainActivity extends AppCompatActivity {
         startService(intentServiceGrrClientAndroid); //async call. Therefore, no blocking on UI thread
         finishAndRemoveTask();
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

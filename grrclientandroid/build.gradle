@@ -4,8 +4,8 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.gaute.grrclientandroid"
-        minSdkVersion 24
-        targetSdkVersion 21
+        minSdkVersion 21
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -17,9 +17,7 @@ android {
         }
     }
     buildToolsVersion '27.0.3'
-//    dexOptions {
-//        incremental true
-//    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
